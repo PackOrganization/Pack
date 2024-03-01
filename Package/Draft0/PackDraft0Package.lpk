@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Package Version="5">
+    <PathDelim Value="\"/>
+    <Name Value="PackDraft0Package"/>
+    <Type Value="RunAndDesignTime"/>
+    <CompilerOptions>
+      <Version Value="11"/>
+      <PathDelim Value="\"/>
+      <SearchPaths>
+        <IncludeFiles Value=".."/>
+        <OtherUnitFiles Value="..\..\Source\Draft0"/>
+        <UnitOutputDirectory Value="Output\$(TargetCPU)-$(TargetOS)"/>
+      </SearchPaths>
+      <CodeGeneration>
+        <Optimizations>
+          <OptimizationLevel Value="3"/>
+        </Optimizations>
+      </CodeGeneration>
+      <Other>
+        <ConfigFile>
+          <WriteConfigFilePath Value=""/>
+        </ConfigFile>
+      </Other>
+    </CompilerOptions>
+    <Files>
+      <Item>
+        <Filename Value="..\PackMode.inc"/>
+        <Type Value="Include"/>
+      </Item>
+      <Item>
+        <Filename Value="..\..\Source\Draft0\UPackDraft0Shared.pas"/>
+        <UnitName Value="UPackDraft0Shared"/>
+      </Item>
+      <Item>
+        <Filename Value="..\..\Source\Draft0\UPackDraft0FileImporter.pas"/>
+        <UnitName Value="UPackDraft0FileImporter"/>
+      </Item>
+      <Item>
+        <Filename Value="..\..\Source\Draft0\UPackDraft0FileExporter.pas"/>
+        <UnitName Value="UPackDraft0FileExporter"/>
+      </Item>
+      <Item>
+        <Filename Value="..\..\Source\Draft0\UPackDraft0SQLite3VFS.pas"/>
+        <UnitName Value="UPackDraft0SQLite3VFS"/>
+      </Item>
+    </Files>
+    <RequiredPkgs>
+      <Item>
+        <PackageName Value="SCL"/>
+      </Item>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+      <UseFileFilters Value="True"/>
+    </PublishOptions>
+  </Package>
+</CONFIG>

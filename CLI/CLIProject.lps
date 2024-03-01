@@ -1,0 +1,787 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="12"/>
+    <BuildModes Active="Release"/>
+    <Units>
+      <Unit>
+        <Filename Value="CLIProject.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <CursorPos X="80" Y="4"/>
+        <UsageCount Value="200"/>
+        <Loaded Value="True"/>
+      </Unit>
+      <Unit>
+        <Filename Value="UProgram.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="8"/>
+        <UsageCount Value="4"/>
+      </Unit>
+      <Unit>
+        <Filename Value="UMain.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="454"/>
+        <CursorPos X="66" Y="471"/>
+        <UsageCount Value="108"/>
+        <Bookmarks Count="2">
+          <Item0 X="44" Y="519" ID="1"/>
+          <Item1 X="31" Y="112" ID="2"/>
+        </Bookmarks>
+      </Unit>
+      <Unit>
+        <Filename Value="..\Source\Shared\UPackProgramShared.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos Y="8"/>
+        <UsageCount Value="106"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D:\Lazarus231002\fpcsrc\rtl\inc\systemh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="580"/>
+        <CursorPos X="3" Y="608"/>
+        <UsageCount Value="14"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCLLab\Source\LProgram.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="6"/>
+        <CursorPos X="28" Y="29"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\Program\UProgram.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="16"/>
+        <CursorPos X="15" Y="32"/>
+        <UsageCount Value="12"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCLLab\Source\LProgramCommandLine.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="60"/>
+        <CursorPos X="20" Y="79"/>
+        <UsageCount Value="5"/>
+        <Bookmarks Count="1">
+          <Item0 X="8" Y="140" ID="1"/>
+        </Bookmarks>
+      </Unit>
+      <Unit>
+        <Filename Value="..\Source\Draft0\UPackDraft0Shared.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="73"/>
+        <CursorPos X="16" Y="115"/>
+        <UsageCount Value="67"/>
+        <Bookmarks Count="1">
+          <Item0 X="17" Y="425" ID="3"/>
+        </Bookmarks>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\File\UFile.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="93"/>
+        <CursorPos X="21" Y="127"/>
+        <UsageCount Value="40"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\File\UFileHelp.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="7"/>
+        <CursorPos Y="41"/>
+        <UsageCount Value="47"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\Source\Draft0\UPackDraft0FileImporter.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="512"/>
+        <CursorPos X="77" Y="544"/>
+        <UsageCount Value="61"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\File\UFilePathHelp.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="319"/>
+        <CursorPos X="45" Y="353"/>
+        <UsageCount Value="26"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\File\UFileWindows.inc"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="40" Y="10"/>
+        <UsageCount Value="43"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\DataStructure\UList.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="173"/>
+        <CursorPos X="3" Y="175"/>
+        <UsageCount Value="7"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\String\UStringHelp.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="23" Y="14"/>
+        <UsageCount Value="23"/>
+      </Unit>
+      <Unit>
+        <Filename Value="UProgramDraft0.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="36" Y="12"/>
+        <UsageCount Value="1"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\System\USystem.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos Y="10"/>
+        <UsageCount Value="24"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\Source\Shared\PackMode.inc"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="73" Y="2"/>
+        <UsageCount Value="5"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\Package\SCL.inc"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="20" Y="4"/>
+        <UsageCount Value="5"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCLLab\Source\LThreadHelp.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos Y="3"/>
+        <UsageCount Value="5"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCLLab\Source\LThread.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="3" Y="12"/>
+        <UsageCount Value="6"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\Source\Draft0\UPackDraft0FileExporter.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="17"/>
+        <CursorPos X="95" Y="43"/>
+        <UsageCount Value="62"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCLLab\Source\LSQLite3Help.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="749"/>
+        <CursorPos X="27" Y="758"/>
+        <UsageCount Value="11"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\SharedLibrary\Windows\UWindows.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="234"/>
+        <CursorPos X="83" Y="249"/>
+        <UsageCount Value="14"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCLLab\Source\LConsole.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\String\UString.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="5" Y="30"/>
+        <UsageCount Value="16"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D:\Lazarus231002\fpcsrc\rtl\win\systhrd.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="521"/>
+        <CursorPos X="7" Y="527"/>
+        <UsageCount Value="5"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCLLab\Source\LFileHelp.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="48" Y="12"/>
+        <UsageCount Value="7"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCLLab\Source\LZSTD.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="28"/>
+        <CursorPos X="77" Y="72"/>
+        <UsageCount Value="6"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\SharedLibrary\SQLite3\USQLite3.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="136"/>
+        <CursorPos X="16" Y="164"/>
+        <UsageCount Value="27"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\SharedLibrary\SQLite3\USQLite3StaticEncryption.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="6"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\Number\UNumberHelp.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="16" Y="14"/>
+        <UsageCount Value="22"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCLLab\Source\LByteUnitHelp.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="44"/>
+        <CursorPos Y="83"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCLLab\Source\LByteUnit.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="34" Y="14"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D:\Lazarus231002\fpcsrc\packages\rtl-console\src\win\crt.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="213"/>
+        <CursorPos X="17" Y="218"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D:\Lazarus231002\fpcsrc\packages\rtl-console\src\inc\video.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="637"/>
+        <CursorPos X="52" Y="649"/>
+        <UsageCount Value="7"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D:\Lazarus231002\fpcsrc\packages\rtl-console\src\inc\videoh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="67"/>
+        <CursorPos X="18" Y="104"/>
+        <UsageCount Value="7"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\Console\UConsole.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="11" Y="13"/>
+        <UsageCount Value="8"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\File\UFileCompare.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="45"/>
+        <CursorPos X="36" Y="72"/>
+        <UsageCount Value="18"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCLLab\Source\LSQLite3Schema.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="70" Y="8"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\String\UStringSplit.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="37" Y="23"/>
+        <UsageCount Value="11"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\String\UStringSegment.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="76" Y="19"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\String\UStringSegmentHelp.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="34" Y="35"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\Number\UNumber.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="5"/>
+        <CursorPos X="22" Y="49"/>
+        <UsageCount Value="13"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\DataStructure\Array\UArray.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="12" Y="11"/>
+        <UsageCount Value="17"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\DataStructure\List\UList.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="37"/>
+        <CursorPos X="65" Y="7"/>
+        <UsageCount Value="11"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\DataStructure\Array\UArrayHelp.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos Y="2"/>
+        <UsageCount Value="18"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\DataStructure\List\UListHelp.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="25" Y="28"/>
+        <UsageCount Value="11"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\String\UStringHandle.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="42" Y="16"/>
+        <UsageCount Value="11"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\String\UStringHandleHelp.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="30" Y="16"/>
+        <UsageCount Value="3"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\String\UStringSplitHelp.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="71" Y="8"/>
+        <UsageCount Value="11"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\Thread\UThread.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="57"/>
+        <CursorPos X="49" Y="78"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\Thread\UThreadHelp.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="69" Y="37"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\Thread\UThreadGroup.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="64" Y="25"/>
+        <UsageCount Value="1"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\System\USystemHelp.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="43" Y="13"/>
+        <UsageCount Value="19"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\Exception\UException.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="17"/>
+        <CursorPos X="3" Y="26"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\Memory\UMemory.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="12"/>
+        <CursorPos X="49" Y="56"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\System\USystemWindows.inc"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="24" Y="13"/>
+        <UsageCount Value="15"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\SharedLibrary\Windows\UWindowsHelp.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="37" Y="20"/>
+        <UsageCount Value="15"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\Tick\UTick.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="42" Y="11"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Package\SCL.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="71" Y="11"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\Tick\UTickWindows.inc"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="66" Y="12"/>
+        <UsageCount Value="16"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\SharedLibrary\Windows\UWindowsLibC.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="63"/>
+        <CursorPos X="33" Y="64"/>
+        <UsageCount Value="33"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\String\UStringCompare.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="6"/>
+        <CursorPos X="3" Y="24"/>
+        <UsageCount Value="20"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\SharedLibrary\SQLite3\USQLite3Help.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="486"/>
+        <CursorPos X="32" Y="498"/>
+        <UsageCount Value="19"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\String\UStringCase.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="14"/>
+        <CursorPos X="27" Y="32"/>
+        <UsageCount Value="14"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\Memory\UMemoryHelp.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2"/>
+        <CursorPos X="8" Y="26"/>
+        <UsageCount Value="24"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\DataStructure\Array\UArraySort.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos Y="41"/>
+        <UsageCount Value="15"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\Memory\UMemorySwap.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="45" Y="23"/>
+        <UsageCount Value="17"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\Byte\UByteUnit.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="7"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\Byte\UByteUnitHelp.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="37"/>
+        <CursorPos X="3" Y="89"/>
+        <UsageCount Value="5"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\Platform\UPlatform.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="4"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\Platform\UPlatformCPU.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos Y="13"/>
+        <UsageCount Value="4"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\Platform\UPlatformCPUWindows.inc"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="60" Y="6"/>
+        <UsageCount Value="4"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\Platform\UPlatformCPUUnix.inc"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="20" Y="3"/>
+        <UsageCount Value="4"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\Source\Draft0\UPackDraft0SQLite3VFS.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="43"/>
+        <CursorPos X="26" Y="67"/>
+        <UsageCount Value="11"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\Memory\UMemoryCompare.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="25" Y="3"/>
+        <UsageCount Value="7"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\File\UFileHandle.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="68" Y="21"/>
+        <UsageCount Value="4"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\File\UFileHandleHelp.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="48"/>
+        <CursorPos X="15" Y="76"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\File\UFileMemoryHandler.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="21" Y="13"/>
+        <UsageCount Value="6"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\File\UFileMemoryHandlerHelp.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="3" Y="18"/>
+        <UsageCount Value="5"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\SharedLibrary\ZSTD\UZSTD.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="21"/>
+        <CursorPos Y="75"/>
+        <UsageCount Value="6"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Package\SCL.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="27"/>
+        <CursorPos X="15" Y="49"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\Package\PackMode.inc"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D:\Lazarus240202\fpcsrc\compiler\symtype.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="888"/>
+        <CursorPos X="27" Y="922"/>
+        <UsageCount Value="5"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D:\Lazarus240220\fpcsrc\compiler\symtype.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="899"/>
+        <CursorPos X="38" Y="941"/>
+        <UsageCount Value="5"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D:\Lazarus231002\fpcsrc\packages\rtl-console\src\win\video.pp"/>
+        <UnitName Value="Video"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="161"/>
+        <CursorPos X="23" Y="176"/>
+        <UsageCount Value="7"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D:\Lazarus230621\fpcsrc\packages\rtl-console\src\win\video.pp"/>
+        <UnitName Value="Video"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="57" Y="33"/>
+        <UsageCount Value="7"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D:\Lazarus230621\fpcsrc\packages\rtl-console\src\unix\video.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1246"/>
+        <CursorPos X="40" Y="1279"/>
+        <UsageCount Value="7"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D:\Lazarus231002\fpcsrc\rtl\win\syswinh.inc"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="3" Y="41"/>
+        <UsageCount Value="7"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\SharedLibrary\SQLite3\USQLite3LibraryStatic.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="19" Y="26"/>
+        <UsageCount Value="8"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\String\UStringCount.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="18"/>
+        <UsageCount Value="8"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\Source\Shared\UPackSQLite3LibraryStatic.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="44" Y="19"/>
+        <UsageCount Value="18"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\Source\Shared\UPackZstandardLibraryStatic.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="19" Y="18"/>
+        <UsageCount Value="18"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\SharedLibrary\Zstandard\UZstandardLibraryStatic.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos Y="2"/>
+        <UsageCount Value="17"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\SharedLibrary\Zstandard\UZstandard.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="58" Y="15"/>
+        <UsageCount Value="17"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\Console\UConsoleWindows.inc"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="28" Y="28"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\Program\UProgramCommandLine.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="135"/>
+        <CursorPos X="7" Y="164"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\File\UFileEnumerateHelp.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="90" Y="23"/>
+        <UsageCount Value="8"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D:\Lazarus231002\fpcsrc\rtl\objpas\sysutils\sysutilh.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="89"/>
+        <CursorPos X="4" Y="117"/>
+        <UsageCount Value="8"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D:\Lazarus231002\fpcsrc\rtl\inc\objpash.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="195"/>
+        <CursorPos X="23" Y="223"/>
+        <UsageCount Value="11"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\Segment\USegmentHelp.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos Y="20"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\Segment\USegment.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="24" Y="7"/>
+        <UsageCount Value="11"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\Tick\UTickLinux.inc"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="66" Y="16"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D:\Tests\SCLOldCode\LeftOver\SCL\Source\Time\UTime.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="29"/>
+        <CursorPos X="55" Y="52"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D:\PascalLibs\mORMot2\src\db\mormot.db.raw.sqlite3.static.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="117"/>
+        <CursorPos X="89" Y="8"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D:\PascalLibs\mORMot2\src\db\mormot.db.raw.sqlite3.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1498"/>
+        <CursorPos X="71" Y="1710"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="D:\Tests\SCLOldCode\SCL\Source\File\UFilePathHelp.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="11"/>
+        <CursorPos Y="40"/>
+        <UsageCount Value="10"/>
+      </Unit>
+      <Unit>
+        <Filename Value="..\..\..\..\Sepid\SCL\Source\SharedLibrary\Posix\UPosix.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit>
+    </Units>
+    <JumpHistory HistoryIndex="1">
+      <Position>
+        <Filename Value="CLIProject.lpr"/>
+        <Caret Line="19"/>
+      </Position>
+      <Position>
+        <Filename Value="CLIProject.lpr"/>
+        <Caret Line="19"/>
+      </Position>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes ActiveMode="default">
+        <Mode Name="default">
+          <local>
+            <CommandLineParams Value="--input=\home\u\Desktop\linux-master\ --log=debug --activate-other-options --wait-for-key-to-exit"/>
+            <LaunchingApplication PathPlusParams="C:\Windows\system32\cmd.exe \C ${TargetCmdLine}"/>
+          </local>
+        </Mode>
+      </Modes>
+    </RunParams>
+    <HistoryLists>
+      <List Name="LaunchingApplication" Type="File" Count="3">
+        <Item1 Value="C:/Windows/system32/cmd.exe /C ${TargetCmdLine}"/>
+        <Item2 Value="C:\Windows\system32\cmd.exe /C ${TargetCmdLine}"/>
+        <Item3 Value="/usr/bin/konsole -T &apos;Lazarus Run Output&apos; -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
+      </List>
+      <List Name="CommandLineParameters" Count="20">
+        <Item1 Value="--input=/home/u/Desktop/linux-master/ --log=debug --activate-other-options --wait-for-key-to-exit"/>
+        <Item2 Value="--input=&quot;/home/u/Desktop/linux-master/&quot;  --log=debug --activate-other-options --wait-for-key-to-exit"/>
+        <Item3 Value="--input=&quot;/home/u/Desktop/linux-master&quot;  --log=debug --activate-other-options --wait-for-key-to-exit"/>
+        <Item4 Value="--input=&quot;T:\&quot;  --log=debug --activate-other-options --wait-for-key-to-exit"/>
+        <Item5 Value="--input=&quot;T:&quot;  --log=debug --activate-other-options --wait-for-key-to-exit"/>
+        <Item6 Value="--input=&quot;D:\TestFiles\linux\linux-master\&quot;  --log=debug --activate-other-options --wait-for-key-to-exit"/>
+        <Item7 Value="--input=&quot;D:\TestFiles\linux\linux-master\&quot;  --log=debug"/>
+        <Item8 Value="--input=&quot;D:\TestFiles\linux\linux-master\&quot;  --log=debug --activate-other-options --verify-pack --wait-for-key-to-exit"/>
+        <Item9 Value="--input=&quot;D:\TestFiles\linux\linux-master\&quot;  --log=debug "/>
+        <Item10 Value="--input=&quot;D:\TestFiles\linux\linux-master-error.pack&quot;  --log=debug"/>
+        <Item11 Value="--input=&quot;D:\TestFiles\linux\linux-master (12).pack&quot;  --log=debug"/>
+        <Item12 Value="--input=&quot;D:\TestFiles\linux\linux-master\&quot;  --log=debug --activate-other-options  --wait-for-key-to-exit"/>
+        <Item13 Value="--input=&quot;D:\TestFiles\linux\linux-master.pack&quot;"/>
+        <Item14 Value="--input=&quot;D:\TestFiles\linux\linux-master\&quot; "/>
+        <Item15 Value="--input=D:\TestFiles\linux\linux-master\"/>
+        <Item16 Value="--input=D:\TestFiles\"/>
+        <Item17 Value="--input=D:\TestFiles\linux\linux-master.pack"/>
+        <Item18 Value="--input=D:\TestFiles\linux\linux-master.sqlite3 --activate-other-options --transform-to-pack"/>
+        <Item19 Value="--input=D:\TestFiles\linux\linux-master.pack --activate-other-options --transform-to-sqlite3"/>
+        <Item20 Value="--input=&quot;D:\TestFiles\linux\linux-master.pack&quot;  --log=debug --activate-other-options --verify-pack --wait-for-key-to-exit"/>
+      </List>
+    </HistoryLists>
+  </ProjectSession>
+  <Debugging>
+    <BreakPoints>
+      <Item>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="UMain.pas"/>
+        <Line Value="519"/>
+      </Item>
+    </BreakPoints>
+  </Debugging>
+</CONFIG>
