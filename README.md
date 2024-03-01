@@ -65,3 +65,24 @@ On Linux (with ext4) it is even faster:
 - It is smart. It configures itself as needed; there are not many dials to play with.
 - It is very resource-friendly.
 - The next updates will include exploring, encryption, Library and more.
+
+
+
+## Build:
+Here are some steps to follow:
+- You will need:
+  - FreePascal and Lazarus from https://gitlab.com/freepascal.org
+  - SCL from https://github.com/SCLOrganization
+- Usin Lazarus:
+  - Open SCL package file (SCL/Package/SCL.lpk)
+    - The standard library that used to make Pack
+    - You will need SCL Source and SCL Libraries in the same directory
+  - Open Pack package file (Pack/Package/PackPackage.lpk)
+     - Base package for Pack source code
+  - Open Pack Draft0 package file (Pack/Package/Draft0/PackDraft0Package.lpk)
+     - It adds support for version Draft 0 of Pack Format
+  - Open Pack CLI project (Pack/CLI/CLIProject.lpi)
+  - Build
+
+---
+A gift to anyone passionate about data especially, Phil Katz, D. Richard Hipp, Yann Collet and me.
