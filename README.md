@@ -73,7 +73,7 @@ Here are some steps to follow:
 - You will need:
   - FreePascal and Lazarus from https://gitlab.com/freepascal.org
   - SCL from https://github.com/SCLOrganization
-- Usin Lazarus:
+- Using Lazarus:
   - Open SCL package file (SCL/Package/SCL.lpk)
     - The standard library that used to make Pack
     - You will need SCL Source and SCL Libraries in the same directory
