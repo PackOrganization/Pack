@@ -7,7 +7,7 @@ unit UMain;
 interface
 
 uses
-  UNumber;
+  UNumber, USQLite3;
 
 function Run: Bool; overload;
 function Stop: Bool; overload;
@@ -18,25 +18,25 @@ uses
   UString, UFile, UNumberHelp, UStringHelp, UFileHelp, UFilePathHelp, UArrayHelp, UProgramCommandLine,
   UThread, UThreadHelp, USystem, UTick, USQLite3Help, UFileCompare, UByteUnit, UByteUnitHelp,
   UPackProgramShared,
-  UPackDraft0Shared, UPackDraft0FileImporter, UPackDraft0FileExporter;
+  UPackDraft0Shared, UPackDraft0FileImporter, UPackDraft0FileExporter, UPackDraft0Iterator;
 
 type
   TProgramTaskKind = (ptkNone, ptkPack, ptkUnpack, ptkList, ptkTransformToSQLite3, ptkTransformToPack);
-  TParameterKind = (pkUnknown, pkHelp, pkPack, pkList, pkInput, pkOutput, pkLog, pkOverwrite, pkPress
+  TParameterKind = (pkUnknown, pkHelp, pkPack, pkList, pkInput, pkOutput, pkInclude, pkLog, pkOverwrite, pkPress
     {$IfDef OtherOptions}, pkActivateOtherOptions, pkVerifyPack, pkTransformToSQLite3, pkTransformToPack,
     pkWaitForKeyToExit{$EndIf});
   TParameterKinds = set of TParameterKind;
-  TParameterKindStringArray = array[TParameterKind] of Str;
+  TParameterValues = array[TParameterKind] of TStrArray;
 
 const
   ParameterNames: array[TParameterKind] of Str =
-    ('', 'help', 'pack', 'list', 'input', 'output', 'log', 'overwrite', 'press'
+    ('', 'help', 'pack', 'list', 'input', 'output', 'include', 'log', 'overwrite', 'press'
     {$IfDef OtherOptions}, 'activate-other-options', 'verify-pack', 'transform-to-sqlite3',
     'transform-to-pack', 'wait-for-key-to-exit'{$EndIf});
-  ParameterShortNames: array[TParameterKind] of Char = (#0, #0, #0, 'l', 'i', 'o', #0, 'w', #0
+  ParameterShortNames: array[TParameterKind] of Char = (#0, #0, #0, 'l', 'i', 'o', #0, #0, 'w', #0
     {$IfDef OtherOptions}, #0, #0, #0, #0, #0{$EndIf});
   ParameterValueRequirements: array[TParameterKind] of Bool =
-    (False, False, False, False, True, True, True, False, True
+    (False, False, False, False, True, True, True, True, False, True
     {$IfDef OtherOptions} , False, False, False, False, False{$EndIf});
   LogParameterValue: TEnumArray<TPackProgramKind, Str> = ('', 'no', 'debug');
   PresssParameterValue: TEnumArray<TPackProgramPress, Str> = ('', 'hard');
@@ -50,6 +50,8 @@ type
   TProcessorContext = record
     Task: TProgramTaskKind;
     InputPath, OutputPath: TFileSystemPath;
+    IncludeIDs: TPackDraft0ItemIDArray;
+    IncludePaths: TPackDraft0ItemPathArray;
     Log: TPackProgramKind;
     FileMode: TPackProgramFileHandleMode;
     Press: TPackProgramPress;
@@ -57,6 +59,7 @@ type
 
     Draft0FileImporter: TPackDraft0FileImporter;
     Draft0FileExporter: TPackDraft0FileExporter;
+    Draft0CLILister: TPackDraft0CLILister;
     Draft0Status: TPackDraft0Status;
   end;
   PProcessorContext = ^TProcessorContext;
@@ -76,7 +79,7 @@ begin
   WriteLn;
   WriteLn('Pack CLI');
   WriteLn('----');
-  WriteLn('Version ', 1);
+  WriteLn('Version ', 2);
   WriteLn('https://pack.ac');
   WriteLn('Made by O');
   WriteLn('VAI');
@@ -89,11 +92,12 @@ begin
   WriteLn;
   WriteLn('Options:');
   WriteLn('--pack');
-  //WriteLn('--list, -l'); //Todo
-  WriteLn('--input="Path", -i');
-  WriteLn('--output="Path", -o');
+  WriteLn('--list, -l');
+  WriteLn('--input=[Path], -i');
+  WriteLn('--output=[Path], -o');
+  WriteLn('--include=[ID, Path]');
   WriteLn('--overwrite, -w');
-  WriteLn('--press=hard');
+  WriteLn('--press=[hard]');
   WriteLn('--log=[no, debug]');
   WriteLn;
 end;
@@ -111,8 +115,9 @@ procedure ProcessMethod(AParameter: Ptr);
         ptkNone: ;
         ptkPack: Start(Draft0FileImporter, &File(OutputPath), FileModes[FileMode], Presses[Press],
             [InputPath], Draft0Status);
-        ptkUnpack: Start(Draft0FileExporter, &File(InputPath), FileModes[FileMode], OutputPath, Draft0Status);
-        ptkList: WriteLn('Todo!'); //Todo:
+        ptkUnpack: Start(Draft0FileExporter, &File(InputPath), FileModes[FileMode], IncludeIDs,
+            IncludePaths, OutputPath, Draft0Status);
+        ptkList: Start(Draft0CLILister, &File(InputPath), IncludeIDs, IncludePaths, Draft0Status);
         ptkTransformToSQLite3, ptkTransformToPack: Transform(&File(InputPath), &File(OutputPath),
             Task = ptkTransformToSQLite3, FileModes[FileMode], Draft0Status);
       end;
@@ -157,11 +162,11 @@ function Run: Bool;
   end;
 
   function HandleParameters(out ATask: TProgramTaskKind; out AInputPath, AOutputPath: TFileSystemPath;
-    out ALog: TPackProgramKind; out AFileMode: TPackProgramFileHandleMode; out APress: TPackProgramPress;
-    out AVerify: Bool; out AWaitForKeyToExit: Bool): Bool;
+    out AIncludes: TStrArray; out ALog: TPackProgramKind; out AFileMode: TPackProgramFileHandleMode;
+    out APress: TPackProgramPress; out AVerify: Bool; out AWaitForKeyToExit: Bool): Bool;
 
     function Process(const AParameter: TProgramCommandLineParameter;
-    var AUsed: TParameterKinds; var AValues: TParameterKindStringArray): Bool; overload;
+    var AUsed: TParameterKinds; var AValues: TParameterValues): Bool; overload;
 
       function Kind(const AName: Str): TParameterKind;
       begin
@@ -178,16 +183,12 @@ function Run: Bool;
       N := Name(AParameter);
       V := Value(AParameter);
       K := Kind(N);
+      AUsed += [K];
 
       if K in [pkInput, pkOutput] then
-        AValues[K] := Fix(V)
+        AValues[K] += [Fix(V)]
       else
-        AValues[K] := V;
-
-      //Check repeat
-      if K in AUsed then //No repeated parameter is allowed
-        Exit(LogError('Repeated parameter: ' + N));
-      AUsed += [K];
+        AValues[K] += [V];
 
       //Check requirement
       if K <> pkUnknown then
@@ -204,7 +205,7 @@ function Run: Bool;
     PS: TProgramCommandLineParameterArray;
     I: Ind;
     UPS: TParameterKinds = [];
-    VS: TParameterKindStringArray;
+    VS: TParameterValues;
     {$IfDef OtherOptions}
     K: TParameterKind;
     {$EndIf}
@@ -212,8 +213,11 @@ function Run: Bool;
     Result := False;
     PS := Parameters;
     if PS = nil then
+    begin
+      AWaitForKeyToExit := False;
       Exit;
-    VS := Default(TParameterKindStringArray);
+    end;
+    VS := Default(TParameterValues);
     for I := 0 to High(PS) do
     begin
       Result := Process(PS[I], UPS, VS);
@@ -223,8 +227,8 @@ function Run: Bool;
       begin
         if Length(PS) = 1 then //One and Unknown, maybe Quick mode
         begin
-          VS[pkInput] := Fix(VS[pkUnknown]); //Check as file
-          if Exists(FileSystemObject(Fix(VS[pkInput]))) then
+          VS[pkInput] += [Fix(VS[pkUnknown][0])]; //Check as file
+          if Exists(FileSystemObject(Fix(VS[pkInput][0]))) then
             UPS := [pkInput]
           else
             Result := False;
@@ -269,18 +273,22 @@ function Run: Bool;
       Exit(LogError('Unambiguous task'));
 
     //Input
-    if VS[pkInput] = '' then
+    if not (pkInput in UPS) then
       Exit(LogError('Missing input'))
     else
-      AInputPath := VS[pkInput];
+      AInputPath := VS[pkInput][0]; //Only use the first one
 
     //Output
-    AOutputPath := VS[pkOutput]; //Suggest later if empty
+    if pkOutput in UPS then //Suggest later if empty
+      AOutputPath := VS[pkOutput][0]; //Only use the first one
+
+    //Include
+    AIncludes := VS[pkInclude];
 
     //Log
     if not (pkLog in UPS) then
       ALog := ppkDefault
-    else if not (Find<TPackProgramKind, Str>(LogParameterValue, VS[pkLog], ALog)) then
+    else if not (Find<TPackProgramKind, Str>(LogParameterValue, VS[pkLog][0], ALog)) then
       Exit(LogError('Unknown value for Log'));
 
     //FileMode
@@ -289,9 +297,8 @@ function Run: Bool;
     //Press
     if not (pkPress in UPS) then
       APress := pppNone
-    else if not (Find<TPackProgramPress, Str>(PresssParameterValue, VS[pkPress], APress)) then
+    else if not (Find<TPackProgramPress, Str>(PresssParameterValue, VS[pkPress][0], APress)) then
       Exit(LogError('Unknown value for Press'));
-
 
     //Others
     {$IfDef OtherOptions}
@@ -305,8 +312,11 @@ function Run: Bool;
     Result := True;
   end;
 
-  function Check(var ATask: TProgramTaskKind; const AInputPath: TFileSystemPath;
-  var AOutputPath: TFileSystemPath; out AVersion: TPackVersion): Bool;
+  function Check(var ATask: TProgramTaskKind; const AInputPath: TFileSystemPath; var AOutputPath: TFileSystemPath;
+  const AIncludes: TStrArray; out AIncludeIDs: TPackDraft0ItemIDArray; out AIncludePaths: TPackDraft0ItemPathArray;
+    out AVersion: TPackVersion): Bool;
+  var
+    EL: Ind;
   begin
     Result := False;
 
@@ -355,7 +365,7 @@ function Run: Bool;
       end;
     end;
     if not Result then
-      LogError('Not a valid Pack file'); //Looks like a Pack file but it is not supported
+      Exit(LogError('Not a valid Pack file')); //Looks like a Pack file but it is not supported
 
     //Suggest Output path
     if (AOutputPath = '') and (ATask in [ptkUnpack, ptkPack, ptkTransformToSQLite3, ptkTransformToPack]) then
@@ -373,6 +383,17 @@ function Run: Bool;
       ptkTransformToPack: AVersion := PackVersion; //Only change into current Pack Version
       else;
     end;
+
+    case AVersion of
+      pvDraft0:
+      begin
+        ToIncludes(AIncludes, AIncludeIDs, AIncludePaths, EL);
+        if EL <> -1 then
+          Exit(LogError('Invalid Include: ' + AIncludes[EL]));
+      end;
+      else
+        Exit(LogError('Include is not supported'));
+    end;
   end;
 
   procedure Log;
@@ -381,8 +402,11 @@ function Run: Bool;
     begin
       WriteLn('Task: ', Task);
       WriteLn('Input: ', InputPath);
-      WriteLn('Output: ', OutputPath);
-      WriteLn('FileMode: ', FileMode);
+      if Task in [ptkUnpack, ptkPack, ptkTransformToSQLite3, ptkTransformToPack] then
+      begin
+        WriteLn('Output: ', OutputPath);
+        WriteLn('FileMode: ', FileMode);
+      end;
       if Task = ptkPack then
         WriteLn('Press: ', Press);
       if Task in [ptkPack, ptkTransformToPack] then
@@ -474,6 +498,7 @@ function Run: Bool;
           case Task of
             ptkPack: E := Error(Draft0FileImporter);
             ptkUnpack: E := Error(Draft0FileExporter);
+            ptkList: E := Error(Draft0CLILister);
             else;
           end;
         if E <> nil then
@@ -565,7 +590,7 @@ function Run: Bool;
       Log := ppkNo; //No progress
       FileMode := ppfhmCreate; //Make sure not Overwriting;
 
-      Result := Check(Task, InputPath, OutputPath, Version);
+      Result := Check(Task, InputPath, OutputPath, [], IncludeIDs, IncludePaths, Version);
     end;
     if not Result then
       Exit;
@@ -590,12 +615,13 @@ function Run: Bool;
 
 var
   VRF, WFKTE: Bool;
+  INLS: TStrArray;
 begin
   try
     ProcessorContext := Default(TProcessorContext);
     with ProcessorContext do
-      Result := HandleParameters(Task, InputPath, OutputPath, Log, FileMode, Press, VRF, WFKTE) and
-        Check(Task, InputPath, OutputPath, Version);
+      Result := HandleParameters(Task, InputPath, OutputPath, INLS, Log, FileMode, Press, VRF, WFKTE) and
+        Check(Task, InputPath, OutputPath, INLS, IncludeIDs, IncludePaths, Version);
     if not Result then
       Exit;
 
@@ -640,6 +666,11 @@ function Stop: Bool;
         ptkUnpack:
         begin
           Stop(Draft0FileExporter, ST);
+          Result := ST = pd0sDone;
+        end;
+        ptkList:
+        begin
+          Stop(Draft0CLILister, ST); //Improve: Not stopping the internal Iterator
           Result := ST = pd0sDone;
         end;
         else

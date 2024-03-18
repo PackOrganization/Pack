@@ -17,9 +17,9 @@
     </General>
     <VersionInfo>
       <UseVersionInfo Value="True"/>
-      <MajorVersionNr Value="1"/>
+      <MajorVersionNr Value="2"/>
       <Attributes pvaPrivateBuild="True"/>
-      <StringTable Comments="https://pack.ac" CompanyName="Pack Project" FileDescription="Pack command line interface" InternalName="Pack CLI" LegalCopyright="Pack Management" ProductName="Pack CLI" ProductVersion="1"/>
+      <StringTable Comments="https://pack.ac" CompanyName="Pack Project" FileDescription="Pack command line interface" InternalName="Pack CLI" LegalCopyright="Pack Management" ProductName="Pack CLI" ProductVersion="2"/>
     </VersionInfo>
     <BuildModes>
       <Item Name="Default" Default="True"/>

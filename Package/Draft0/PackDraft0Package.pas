@@ -8,7 +8,8 @@ unit PackDraft0Package;
 interface
 
 uses
-  UPackDraft0Shared, UPackDraft0FileImporter, UPackDraft0FileExporter, UPackDraft0SQLite3VFS, LazarusPackageIntf;
+  UPackDraft0Shared, UPackDraft0Iterator, UPackDraft0SQLite3VFS, UPackDraft0FileImporter, UPackDraft0FileExporter, 
+  LazarusPackageIntf;
 
 implementation
 

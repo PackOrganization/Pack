@@ -32,7 +32,6 @@ type
     ID: TSQLite3ROWID;
   end;
   PQueueItem = ^TQueueItem;
-  TQueueItemList = TList<TQueueItem>;
 
   TQueueItemContent = record
     Item: Ind; //Index in Queue.Items
@@ -41,18 +40,16 @@ type
     Size: Siz;
   end;
   PQueueItemContent = ^TQueueItemContent;
-  TQueueItemContentList = TList<TQueueItemContent>;
 
   TQueueContent = record
     ID: TSQLite3ROWID;
-    ItemContents: TQueueItemContentList;
+    ItemContents: TList<TQueueItemContent>;
   end;
   PQueueContent = ^TQueueContent;
-  TQueueContentList = TList<TQueueContent>;
 
   TQueue = record
-    Items: TQueueItemList;
-    Contents: TQueueContentList;
+    Items: TList<TQueueItem>;
+    Contents: TList<TQueueContent>;
     LastPickedContent: Ind;
   end;
 
@@ -74,11 +71,9 @@ class procedure TProcessorsContext.Act(var AContext: TProcessorsContext; var AEr
     begin
       case AContext.Press of
         pd0pNone: Result := Create(AConverter, TZSTDStrategy(ZSTD_dfast),
-            EffectiveZSTDWindowLog(AContext.BundleSize),
-            16, 17, 1, 5, 0);
+            EffectiveZSTDWindowLog(AContext.BundleSize), 16, 17, 1, 5, 0);
         pd0pHard: Result := Create(AConverter, TZSTDStrategy(ZSTD_btopt),
-            EffectiveZSTDWindowLog(AContext.BundleSize),
-            22, 22, 5, 5, 48);
+            EffectiveZSTDWindowLog(AContext.BundleSize), 22, 22, 5, 5, 48);
       end;
       ANeededSize := ZSTD_compressBound(AContext.BundleSize);
       if not Result then
@@ -172,7 +167,7 @@ class procedure TProcessorsContext.Act(var AContext: TProcessorsContext; var AEr
       Exit(HandleError(AError, pd0sCanNotConvert, AQueueContent.ID, AStatus));
     Size(AConvertedContent, R);
 
-    //Check if it worth it
+    //Check if it's worth it
     C := (Size(AContent) > Tolerance) and //Not very small
       (Size(AConvertedContent) < (Size(AContent) - Tolerance)); //Effective compression
     AResultContent := Condition(C, AConvertedContent, AContent);
@@ -230,7 +225,7 @@ procedure Start(var AImporter: TPackDraft0FileImporter; constref AFile: TFile; A
     Result := True;
   end;
 
-  function Scan(var AItems: TQueueItemList; out ATotalSize: Siz): Bool;
+  function Scan(var AItems: TList<TQueueItem>; out ATotalSize: Siz): Bool;
 
     function Add(AParent: Ind; const AParentPath: TDirectoryPath; const AName: TFileSystemName;
       AKind: TFileSystemObjectKind; ASize: Siz): Bool; overload; forward;
@@ -258,9 +253,8 @@ procedure Start(var AImporter: TPackDraft0FileImporter; constref AFile: TFile; A
       var
         IT: PQueueItem;
       begin
-        AIndex := AddEmpty(AItems, IT);
-        if IT = nil then
-          Exit(HandleError(pd0sNoMemory, AStatus));
+        if not (AddEmpty<TQueueItem>(AItems, AIndex, IT, AStatus)) then
+          Exit(False);
         with IT^ do
         begin
           Parent := AParent;
@@ -332,7 +326,7 @@ procedure Start(var AImporter: TPackDraft0FileImporter; constref AFile: TFile; A
     Result := Result * 1024 * 1024;
   end;
 
-  //Split Items into fixed size Contents, and each part will be an ItemContent
+  //Split Items into fixed-size Contents, and each part will be an ItemContent
   function Split(var AQueue: TQueue; ABundleSize: Siz): Bool;
   var
     LCID: TSQLite3ROWID;
@@ -342,6 +336,7 @@ procedure Start(var AImporter: TPackDraft0FileImporter; constref AFile: TFile; A
     CT: PQueueContent;
     IC: PQueueItemContent;
   begin
+    Result := False;
     LCID := 0; //Last Content ID. Todo: Query form Database on Append
     CS := 0;
     CP := 0;
@@ -361,9 +356,8 @@ procedure Start(var AImporter: TPackDraft0FileImporter; constref AFile: TFile; A
       repeat
         if CP = CS then //Add a new content
         begin
-          CT := AddEmptyPointer(AQueue.Contents);
-          if CT = nil then
-            Exit(HandleError(pd0sNoMemory, AStatus));
+          if not (AddEmpty<TQueueContent>(AQueue.Contents, CT, AStatus)) then
+            Exit;
           LCID += 1; //New Content ID
           CT^.ID := LCID;
           CS := ABundleSize;
@@ -376,9 +370,8 @@ procedure Start(var AImporter: TPackDraft0FileImporter; constref AFile: TFile; A
           ICS := CS - CP;
 
         //Add ItemContent
-        IC := AddEmptyPointer(CT^.ItemContents);
-        if IC = nil then
-          Exit(HandleError(pd0sNoMemory, AStatus));
+        if not (AddEmpty<TQueueItemContent>(CT^.ItemContents, IC, AStatus)) then
+          Exit;
         IC^.Item := ITI;
         IC^.FilePosition := ITP;
         IC^.ContentPosition := CP;
@@ -401,21 +394,9 @@ procedure Start(var AImporter: TPackDraft0FileImporter; constref AFile: TFile; A
     AQueue.LastPickedContent := -1;
   end;
 
-  function OpenConnection(out AConnection: Psqlite3): Bool;
-  var
-    R: TSQLite3ResultCode;
+  function CloseConnection(AConnection: Psqlite3; ACancel: Bool; AFileExists: Bool): Bool; overload;
   begin
-    R := Open(Path(AFile), SQLITE_OPEN_CREATE or SQLITE_OPEN_READWRITE or SQLITE_OPEN_FULLMUTEX or
-      SQLITE_OPEN_EXRESCODE, AConnection);
-    Result := CheckSQLite3Result(AImporter.Error, R, pd0sCanNotOpen, AStatus);
-  end;
-
-  function CloseConnection(AConnection: Psqlite3; ACancel: Bool; AFileExists: Bool): Bool;
-  var
-    R: TSQLite3ResultCode;
-  begin
-    R := Close(AConnection);
-    Result := CheckSQLite3Result(AImporter.Error, R, pd0sCanNotClose, AStatus);
+    Result := CloseConnection(AConnection, AImporter.Error, AStatus);
     if not Result then
       Exit;
 
@@ -424,7 +405,7 @@ procedure Start(var AImporter: TPackDraft0FileImporter; constref AFile: TFile; A
         HandleOSError(AImporter.Error, pd0sAbnormal, '', AStatus);
   end;
 
-  function HandleOptions(AConnection: Psqlite3; ATotalSize: Siz; AFileExists: Bool): Bool;
+  function HandleOptions(AConnection: Psqlite3; ATotalSize: Siz; AFileExists: Bool): Bool; overload;
 
     function EffectivePageSize: Siz;
     begin
@@ -433,8 +414,7 @@ procedure Start(var AImporter: TPackDraft0FileImporter; constref AFile: TFile; A
     end;
 
   begin
-    Result := EnableSecurity(AConnection, AStatus);
-    Result := Result and Options(AConnection, s3smOff, s3lmExclusive, s3jmOff, s3tmMemory,
+    Result := HandleOptions(AConnection,
       Condition<TSQLite3PageSize>(AFileExists, 0, EffectivePageSize), //Change if it is a new file
       AImporter.Error, AStatus);
   end;
@@ -504,7 +484,7 @@ procedure Start(var AImporter: TPackDraft0FileImporter; constref AFile: TFile; A
       end;
     end;
 
-    function InsertContentItems: Bool;
+    function InsertItemContents: Bool;
     const
       InsertItemContentSQLStatement: TSQLite3SQLStatement =
         'INSERT INTO ItemContent(Item, ItemPosition, Content, ContentPosition, Size) VALUES(?, ?, ?, ?, ?);';
@@ -533,7 +513,7 @@ procedure Start(var AImporter: TPackDraft0FileImporter; constref AFile: TFile; A
     end;
 
   begin
-    Result := InsertItems and InsertContentItems;
+    Result := InsertItems and InsertItemContents;
   end;
 
   function Process(AConnection: Psqlite3; constref AQueue: TQueue; ABundleSize: Siz): Bool; overload;
@@ -553,7 +533,7 @@ var
   CN: Psqlite3;
 begin
   AStatus := pd0sUnknown;
-  if HandleExists(EX) and Prepare(Q, TS, BS) and OpenConnection(CN) then
+  if HandleExists(EX) and Prepare(Q, TS, BS) and OpenConnection(AFile, False, CN, AImporter.Error, AStatus) then
   try
     if HandleOptions(CN, TS, EX) and BeginUpdate(CN) then
     try

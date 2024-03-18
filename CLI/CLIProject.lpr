@@ -10,8 +10,13 @@ uses
   UNumber,
   UMain;
 
+var
+  Stopped: Bool = False;
+
   procedure HandleClose;
   begin
+    Stopped := True;
+    CursorVisible(True);
     Stop;
   end;
 
@@ -21,6 +26,7 @@ begin
   try
     Run;
   finally
-    CursorVisible(True);
+    if not Stopped then //Improve: Prevent freeze on Linux
+      CursorVisible(True);
   end;
 end.

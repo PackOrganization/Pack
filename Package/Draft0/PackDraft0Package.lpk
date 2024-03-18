@@ -33,6 +33,14 @@
         <UnitName Value="UPackDraft0Shared"/>
       </Item>
       <Item>
+        <Filename Value="..\..\Source\Draft0\UPackDraft0Iterator.pas"/>
+        <UnitName Value="UPackDraft0Iterator"/>
+      </Item>
+      <Item>
+        <Filename Value="..\..\Source\Draft0\UPackDraft0SQLite3VFS.pas"/>
+        <UnitName Value="UPackDraft0SQLite3VFS"/>
+      </Item>
+      <Item>
         <Filename Value="..\..\Source\Draft0\UPackDraft0FileImporter.pas"/>
         <UnitName Value="UPackDraft0FileImporter"/>
       </Item>
@@ -40,12 +48,11 @@
         <Filename Value="..\..\Source\Draft0\UPackDraft0FileExporter.pas"/>
         <UnitName Value="UPackDraft0FileExporter"/>
       </Item>
-      <Item>
-        <Filename Value="..\..\Source\Draft0\UPackDraft0SQLite3VFS.pas"/>
-        <UnitName Value="UPackDraft0SQLite3VFS"/>
-      </Item>
     </Files>
     <RequiredPkgs>
+      <Item>
+        <PackageName Value="SCLLibraries"/>
+      </Item>
       <Item>
         <PackageName Value="SCL"/>
       </Item>

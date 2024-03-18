@@ -5,8 +5,8 @@ unit UPackDraft0Shared;
 interface
 
 uses
-  UNumber, UString, UFile, UException, UMemory, UMemoryHelp, USystem, USystemHelp, UMemoryBlock, UList,
-  UThread, UThreadGroup, USQLite3, USQLite3Help;
+  UNumber, UString, UStringHelp, UFile, UException, UMemory, UMemoryHelp, USystem, USystemHelp,
+  UMemoryBlock, UList, UListHelp, UThread, UThreadGroup, USQLite3, USQLite3Help;
 
 type
   TPackDraft0HeaderString = array[0..3] of Char;
@@ -17,30 +17,38 @@ const
   PackDraft0Version: U16 = 1 shl 13 + 0; //Draft0: 8192
 
 type
-  TPackDraft0Status = (
-    pd0sUnknown, pd0sAbnormal, pd0sDone, pd0sStopped, pd0sNoMemory,
+  TPackDraft0Status = (pd0sUnknown, pd0sAbnormal, pd0sDone, pd0sStopped, pd0sNoMemory,
     pd0sDoesNotExists, pd0sAlreadyExists, pd0sCanNotOverwrite, pd0sCanNotOpen, pd0sCanNotClose,
     pd0sCanNotProcessTransaction, pd0sCanNotInitializeStatement, pd0sCanNotUseStatement,
     pd0sCanNotSetOptions, pd0sCanNotReadFileAttributes, pd0sNotSupportedPath, pd0sCanNotOpenFolder,
     pd0sCanNotOpenFile, pd0sCanNotSeekFile, pd0sCanNotReadFile, pd0sCanNotWriteFile, pd0sInvalidValue,
     pd0sCanNotInitializeConverter, pd0sCanNotStartThread, pd0sCanNotConvert, pd0sExceededContentSizeLimit,
-    pd0sInvalidContentSize, pd0sIrregularContentSize, pd0sInvalidItemContents, pd0sCanNotCreateFolder);
+    pd0sInvalidContentSize, pd0sInvalidItemContent, pd0sInvalidItemName, pd0sCanNotCreateFolder);
 
 function Status(var ACurrentValue: TPackDraft0Status; ANewValue: TPackDraft0Status): Bool; inline; overload;
 
 type
+  TPackDraft0ItemID = type TSQLite3ROWID;
+  TPackDraft0ItemName = type Str;
   TPackDraft0ItemPath = type Str;
-  TPackDraft0ItemPathArray = array of TPackDraft0ItemPath;
   TPackDraft0FileHandleMode = (pd0fhmCreate, pd0fhmCreateOrOverwrite);
   TPackDraft0Press = (pd0pNone, pd0pHard);
 
-  //Convert to 0 and 1 to store as special Serial Types of 8 and 9
+  //Convert to 0 and 1 to store as special Serial Types of 8 and 9 in SQLite3
   TPackDraft0ItemKind = (pd0ikNone = -1, pd0ikFile = 0, pd0ikFolder = 1);
+
+const
+  PackDraft0ItemKindTest: array[TPackDraft0ItemKind] of Str = ('', 'File', 'Folder');
+
+type
+  TPackDraft0ItemIDArray = TArray<TPackDraft0ItemID>;
+  TPackDraft0ItemPathArray = TArray<TPackDraft0ItemPath>;
 
 function ToItemKind(AValue: TFileSystemObjectKind): TPackDraft0ItemKind; inline; overload;
 
 type
-  TPackDraft0ErrorReason = (pd0erUnknown, pd0erNone, pd0erInvalidFile, pd0erDoesNotExists, pd0erDiskIsFull);
+  TPackDraft0ErrorReason = (pd0erUnknown, pd0erNone, pd0erInvalidFile, pd0erDoesNotExists, pd0erAlreadyExists,
+    pd0erDiskIsFull, pd0erInvalidItemName);
 
   TPackDraft0Error = record
   private
@@ -56,6 +64,7 @@ function Reason(constref AError: TPackDraft0Error): TPackDraft0ErrorReason; over
 function UnknownReason(constref AError: TPackDraft0Error): Str; overload;
 function Path(constref AError: TPackDraft0Error): TFileSystemPath; overload;
 function RowID(constref AError: TPackDraft0Error): TSQLite3ROWID; overload;
+procedure Copy(constref ASource: TPackDraft0Error; var ADestination: TPackDraft0Error); overload;
 
 function HandleError(AOnErrorStatus: TPackDraft0Status; var AStatus: TPackDraft0Status): Bool; overload;
 function HandleError(var AError: TPackDraft0Error; AOnErrorStatus: TPackDraft0Status;
@@ -73,20 +82,36 @@ function CheckSQLite3Result(var AError: TPackDraft0Error; ASQLite3ResultCode: TS
   AOnErrorStatus: TPackDraft0Status; var AStatus: TPackDraft0Status): Bool; overload;
 function AsText(constref AError: TPackDraft0Error; AStatus: TPackDraft0Status): Str; overload;
 
+function IsValid(const AName: TPackDraft0ItemName): Bool; overload;
+function IsValid(const AName: TPackDraft0ItemName; var AStatus: TPackDraft0Status): Bool; overload;
+function CheckExists(const APath: TFileSystemPath; var AStatus: TPackDraft0Status): Bool; overload;
+function AddEmpty<T>(var AList: TList<T>; out AIndex: Ind; out APointer: Ptr; var AStatus: TPackDraft0Status): Bool;
+  overload;
+function AddEmpty<T>(var AList: TList<T>; out APointer: Ptr; var AStatus: TPackDraft0Status): Bool; overload;
+function ItemPath<TItem>(constref AItem: TItem; const AItems: TList<TItem>; ACheckValid: Bool): TFileSystemPath; overload;
+function ItemFileSystemPath<TItem>(const ARootPath: TDirectoryPath; constref AItem: TItem; const AItems: TList<TItem>;
+  ACheckValid: Bool): TFileSystemPath; overload;
 function Capacity(var AMemoryBlock: TMemoryBlock; ACapacity: Siz; var AStatus: TPackDraft0Status): Bool; inline; overload;
-
 function Size<TQueueContent, TQueueItemContent>(constref AContent: TQueueContent): Siz; inline; overload;
 
 function Initialize(AConnection: Psqlite3; const ASQLStatement: TSQLite3SQLStatement;
   out AStatement: Psqlite3_stmt; var AError: TPackDraft0Error; var AStatus: TPackDraft0Status): Bool; overload;
-function ColumnValue<T>(AStatement: Psqlite3_stmt; AIndex: Ind; out AValue: T;
-  var AStatus: TPackDraft0Status): Bool; overload;
+function Column<T>(AStatement: Psqlite3_stmt; AIndex: Ind; out AValue: T; var AStatus: TPackDraft0Status): Bool; overload;
+function ColumnAll<T1, T2, T3, T4>(AStatement: Psqlite3_stmt; out V1: T1; out V2: T2; out V3: T3;
+  out V4: T4; var AStatus: TPackDraft0Status): Bool; overload;
+function ColumnAll<T1, T2, T3, T4, T5>(AStatement: Psqlite3_stmt; out V1: T1; out V2: T2; out V3: T3;
+  out V4: T4; out V5: T5; var AStatus: TPackDraft0Status): Bool; overload;
+function ColumnAll<T1, T2, T3, T4, T5, T6>(AStatement: Psqlite3_stmt; out V1: T1; out V2: T2; out V3: T3;
+  out V4: T4; out V5: T5; out V6: T6; var AStatus: TPackDraft0Status): Bool; overload;
 
 function EnableSecurity(AConnection: Psqlite3; var AStatus: TPackDraft0Status): Bool; overload;
 function Options(AConnection: Psqlite3; ASynchronousMode: TSQLite3SynchronousMode;
   ALockingMode: TSQLite3LockingMode; AJournalMode: TSQLite3JournalMode;
   ATempStore: TSQLite3TempStore; APageSize: TSQLite3PageSize;
   var AError: TPackDraft0Error; var AStatus: TPackDraft0Status): Bool; overload;
+
+function IndexedItemsSQLite3SQLStatement(const AIncludeIDs: TPackDraft0ItemIDArray;
+  const AIncludePaths: TPackDraft0ItemPathArray): TSQLite3SQLStatement; overload;
 
 type
   TPackDraft0Statistics = record
@@ -127,22 +152,36 @@ function Next<TQueue, PQueueContent>(var AQueue: TQueue; out AQueueContent: PQue
   var AStatus: TPackDraft0Status): Bool; overload;
 procedure ThreadGroupMethod<TContext>(AIndex: Ind; var AContext: TContext); overload;
 
+function OpenConnection(const AFile: TFile; AReadOnly: Bool; out AConnection: Psqlite3;
+  var AError: TPackDraft0Error; var AStatus: TPackDraft0Status): Bool; overload;
+function CloseConnection(AConnection: Psqlite3; var AError: TPackDraft0Error;
+  var AStatus: TPackDraft0Status): Bool; overload;
+function HandleOptions(AConnection: Psqlite3; APageSize: TSQLite3PageSize;
+  var AError: TPackDraft0Error; var AStatus: TPackDraft0Status): Bool; overload;
+
 type
-  TPackDraft0FileTaskHandler = object
+  TPackDraft0TaskHandler = object
     Stopped: Bool;
     Error: TPackDraft0Error;
+  end;
+  PPackDraft0TaskHandler = ^TPackDraft0TaskHandler;
+
+procedure Stop(var AHandler: TPackDraft0TaskHandler; out AStatus: TPackDraft0Status); overload;
+function CheckStop(constref AHandler: TPackDraft0TaskHandler; var AStatus: TPackDraft0Status): Bool;
+  inline; overload;
+function Error(constref AHandler: TPackDraft0TaskHandler): PPackDraft0Error; overload;
+
+type
+  TPackDraft0FileTaskHandler = object(TPackDraft0TaskHandler)
     Statistics: TPackDraft0Statistics;
   end;
   PPackDraft0FileTaskHandler = ^TPackDraft0FileTaskHandler;
 
-function CheckStop(constref AHandler: TPackDraft0FileTaskHandler; var AStatus: TPackDraft0Status): Bool;
-  inline; overload;
+function Statistics(constref AHandler: TPackDraft0FileTaskHandler): PPackDraft0Statistics; overload;
+
 function Process<TQueue>(var AHandler: TPackDraft0FileTaskHandler;
   var AContext: TPackDraft0FileTaskHandlerProcessorsContext<TQueue>; AConnection: Psqlite3;
   constref AMethod: TThreadGroupMethod; constref AQueue: TQueue; var AStatus: TPackDraft0Status): Bool; overload;
-procedure Stop(var AHandler: TPackDraft0FileTaskHandler; out AStatus: TPackDraft0Status); overload;
-function Error(constref AHandler: TPackDraft0FileTaskHandler): PPackDraft0Error; overload;
-function Statistics(constref AHandler: TPackDraft0FileTaskHandler): PPackDraft0Statistics; overload;
 
 function CheckHeader(AData: Ptr; ASize: Siz): Bool; overload;
 function CheckHeader(const AFile: TFile): Bool; overload;
@@ -153,10 +192,13 @@ function ToSQLite3Header(const AFile: TFile; out AStatus: TPackDraft0Status): Bo
 procedure Transform(const ASource, ADestination: TFile; AToSQLite3OrPack: Bool;
   AMode: TPackDraft0FileHandleMode; out AStatus: TPackDraft0Status); overload;
 
+function ToIncludes(const AValues: TStrArray; out AIncludeIDs: TPackDraft0ItemIDArray;
+  out AIncludePaths: TPackDraft0ItemPathArray; out AErrorIndex: Ind): Bool; overload;
+
 implementation
 
 uses
-  UNumberHelp, UStringCheck, UStringHelp, UMemoryCompare, UFileHandleHelp, UFileHelp, UThreadHelp, USystemCPU;
+  UNumberHelp, UStringCheck, UStringHandle, UMemoryCompare, UFileHandleHelp, UFileHelp, UThreadHelp, USystemCPU;
 
 //Only set the status if it is still unknown
 // or if it is done and a sudden issue happens, like closing a transaction on a full disk
@@ -203,6 +245,11 @@ begin
   Result := AError.RowID;
 end;
 
+procedure Copy(constref ASource: TPackDraft0Error; var ADestination: TPackDraft0Error);
+begin
+  ADestination := ASource;
+end;
+
 function HandleError(AOnErrorStatus: TPackDraft0Status; var AStatus: TPackDraft0Status): Bool;
 begin
   Status(AStatus, AOnErrorStatus);
@@ -232,8 +279,10 @@ begin
     UpdateToLast(System);
     case Kind(System) of
       sekNone: Reason := pd0erNone;
-      sekFileNotFound, sekPathNotFound: Reason := pd0erDoesNotExists;
+      sekDoesNotExists: Reason := pd0erDoesNotExists;
+      sekAlreadyExists: Reason := pd0erAlreadyExists;
       sekDiskIsFull: Reason := pd0erDiskIsFull;
+      sekInvalidFileSystemName: Reason := pd0erInvalidItemName;
       else
         Reason := pd0erUnknown;
     end;
@@ -273,7 +322,7 @@ begin
   end;
 end;
 
-//Check and set AStatus and Handle SQLite3 Error, if there is an issue
+//Check and set AStatus and handle SQLite3 error, if there is an issue
 function CheckSQLite3Result(var AError: TPackDraft0Error; ASQLite3ResultCode,
   AExpectedSQLite3ResultCode: TSQLite3ResultCode; AOnErrorStatus: TPackDraft0Status; var AStatus: TPackDraft0Status): Bool;
 begin
@@ -298,7 +347,6 @@ var
 begin
   if AStatus = pd0sDone then
     Exit('');
-  //Result := 'Error: ';
   Result := '';
   System.Str(AStatus, S);
   Result += S;
@@ -316,13 +364,82 @@ begin
       if S <> '' then
         Result += ', Reason: ' + S;
     end;
-    S := Path(AError);
-    if S <> '' then
-      Result += ', Path: ' + S;
-    ID := RowID(AError);
-    if ID <> 0 then
-      Result += ', RowID: ' + ToStr(ID);
   end;
+  S := Path(AError);
+  if S <> '' then
+    Result += ', Path: ' + S;
+  ID := RowID(AError);
+  if ID <> 0 then
+    Result += ', RowID: ' + ToStr(ID);
+end;
+
+//Valid name is not empty and does not have PathDelimiter
+function IsValid(const AName: TPackDraft0ItemName): Bool;
+var
+  P: PChar;
+  C, L: NChar;
+begin
+  Result := AName <> '';
+  if Result then
+  begin
+    Start(AName, P, C, L);
+    Result := Next(P, C, L, PathDelimiter) = L;
+  end;
+end;
+
+function IsValid(const AName: TPackDraft0ItemName; var AStatus: TPackDraft0Status): Bool;
+begin
+  Result := IsValid(AName);
+  if not Result then
+    HandleError(pd0sInvalidItemName, AStatus);
+end;
+
+function CheckExists(const APath: TFileSystemPath; var AStatus: TPackDraft0Status): Bool;
+begin
+  Result := Exists(FileSystemObject(APath));
+  if not Result then
+    HandleError(pd0sDoesNotExists, AStatus);
+end;
+
+function AddEmpty<T>(var AList: TList<T>; out AIndex: Ind; out APointer: Ptr; var AStatus: TPackDraft0Status): Bool;
+begin
+  AIndex := AddEmpty(AList, APointer);
+  Result := APointer <> nil;
+  if not Result then
+    Exit(HandleError(pd0sNoMemory, AStatus));
+end;
+
+function AddEmpty<T>(var AList: TList<T>; out APointer: Ptr; var AStatus: TPackDraft0Status): Bool;
+var
+  I: Ind;
+begin
+  Result := AddEmpty<T>(AList, I, APointer, AStatus);
+end;
+
+//Path without root PathSeparator
+function ItemPath<TItem>(constref AItem: TItem; const AItems: TList<TItem>; ACheckValid: Bool): TFileSystemPath;
+var
+  IT: ^TItem;
+begin
+  IT := @AItem; //First
+  if ACheckValid and (not IsValid(IT^.Name)) then
+    Exit('');
+  Result := IT^.Name + Condition(IT^.Kind <> pd0ikFolder, '', PathDelimiter);
+  while IT^.ParentIndex <> -1 do //Parents
+  begin
+    IT := ItemPointer(AItems, IT^.ParentIndex);
+    if ACheckValid and (not IsValid(IT^.Name)) then
+      Exit('');
+    Result := IT^.Name + PathDelimiter + Result;
+  end;
+end;
+
+function ItemFileSystemPath<TItem>(const ARootPath: TDirectoryPath; constref AItem: TItem; const AItems: TList<TItem>;
+  ACheckValid: Bool): TFileSystemPath;
+begin
+  Result := (ItemPath<TItem>(AItem, AItems, ACheckValid));
+  if Result <> '' then
+    Result := ARootPath + Result;
 end;
 
 function Capacity(var AMemoryBlock: TMemoryBlock; ACapacity: Siz; var AStatus: TPackDraft0Status): Bool;
@@ -351,9 +468,33 @@ begin
     Result := CheckSQLite3Result(AError, R, pd0sCanNotInitializeStatement, AStatus);
 end;
 
-function ColumnValue<T>(AStatement: Psqlite3_stmt; AIndex: Ind; out AValue: T; var AStatus: TPackDraft0Status): Bool;
+function Column<T>(AStatement: Psqlite3_stmt; AIndex: Ind; out AValue: T; var AStatus: TPackDraft0Status): Bool;
 begin
   Result := USQLite3Help.Column<T>(AStatement, AIndex, AValue);
+  if not Result then
+    AStatus := pd0sInvalidValue;
+end;
+
+function ColumnAll<T1, T2, T3, T4>(AStatement: Psqlite3_stmt; out V1: T1; out V2: T2; out V3: T3; out V4: T4;
+  var AStatus: TPackDraft0Status): Bool;
+begin
+  Result := USQLite3Help.ColumnAll<T1, T2, T3, T4>(AStatement, V1, V2, V3, V4);
+  if not Result then
+    AStatus := pd0sInvalidValue;
+end;
+
+function ColumnAll<T1, T2, T3, T4, T5>(AStatement: Psqlite3_stmt; out V1: T1; out V2: T2; out V3: T3; out V4: T4; out
+  V5: T5; var AStatus: TPackDraft0Status): Bool;
+begin
+  Result := USQLite3Help.ColumnAll<T1, T2, T3, T4, T5>(AStatement, V1, V2, V3, V4, V5);
+  if not Result then
+    AStatus := pd0sInvalidValue;
+end;
+
+function ColumnAll<T1, T2, T3, T4, T5, T6>(AStatement: Psqlite3_stmt; out V1: T1; out V2: T2; out V3: T3; out V4: T4; out
+  V5: T5; out V6: T6; var AStatus: TPackDraft0Status): Bool;
+begin
+  Result := USQLite3Help.ColumnAll<T1, T2, T3, T4, T5, T6>(AStatement, V1, V2, V3, V4, V5, V6);
   if not Result then
     AStatus := pd0sInvalidValue;
 end;
@@ -377,6 +518,54 @@ begin
   if APageSize <> 0 then
     Result := Result and PageSize(AConnection, APageSize, [], R);
   Result := CheckSQLite3Result(AError, R, pd0sCanNotSetOptions, AStatus);
+end;
+
+function IndexedItemsSQLite3SQLStatement(const AIncludeIDs: TPackDraft0ItemIDArray;
+  const AIncludePaths: TPackDraft0ItemPathArray): TSQLite3SQLStatement;
+
+  function InnerSelectByPath: TSQLite3SQLStatement;
+  begin
+    Result :=
+      '    WITH RECURSIVE FIT AS ('
+      + '    SELECT *, ''/'' || Name || IIF(Kind = 1, ''/'', '''') AS Path FROM Item WHERE Parent = 0'
+      + '    UNION ALL'
+      + '    SELECT Item.*, FIT.Path || Item.Name || IIF(Item.Kind = 1, ''/'', '''') AS Path'
+      + '      FROM Item INNER JOIN FIT ON FIT.Kind = 1 AND Item.Parent = FIT.ID'
+      + '      WHERE ' + Join(AIncludePaths, '', '''', ' OR ', ''' LIKE (Path || ''%'')', '')
+      + '      )'
+      + '  SELECT ID FROM FIT WHERE Path IN (' + Join(AIncludePaths, '', '''', ',', '''', '') + ')';
+  end;
+
+  function InnerSelectByID: TSQLite3SQLStatement;
+  begin
+    Result := 'SELECT Item.*, ID AS FID FROM Item WHERE';
+    if AIncludeIDs <> nil then
+      Result += ' ID IN (' + Join(AIncludeIDs, ',') + ')';
+    if (AIncludeIDs <> nil) and (AIncludePaths <> nil) then
+      Result += ' OR ';
+    if AIncludePaths <> nil then
+      Result += ' ID IN (' + InnerSelectByPath + ')';
+  end;
+
+const
+  SelectAll = //Faster select of all Items
+    '   WITH IT AS (SELECT * FROM Item),'
+    + ' ITI AS (SELECT (ROW_NUMBER() OVER (ORDER BY ID) - 1) AS I, * FROM IT)'
+    + ' SELECT C.I, IFNULL(P.I, -1) AS PI, C.ID, C.Parent, C.Kind, C.Name FROM ITI AS C'
+    + '  LEFT JOIN ITI AS P ON C.Parent = P.ID ORDER BY C.I';
+begin
+  if (AIncludeIDs = nil) and (AIncludePaths = nil) then //All or some
+    Exit(SelectAll);
+
+  Result :=
+    'WITH RECURSIVE IT AS ('
+    + InnerSelectByID
+    + ' UNION ALL'
+    + ' SELECT Item.*, IT.FID FROM Item INNER JOIN IT ON IT.Kind = 1 AND Item.Parent = IT.ID'
+    + ' ),'
+    + ' ITI AS (SELECT (ROW_NUMBER() OVER (ORDER BY FID, ID) - 1) AS I, * FROM IT)'
+    + ' SELECT C.I, IFNULL(P.I, -1) AS PI, C.ID, C.Parent, C.Kind, C.Name FROM ITI AS C'
+    + ' LEFT JOIN ITI AS P ON C.FID = P.FID AND C.Parent = P.ID ORDER BY C.I';
 end;
 
 procedure AddTotalBytes(var AStatistics: TPackDraft0Statistics; AValue: UPS);
@@ -467,11 +656,62 @@ begin
   end;
 end;
 
-function CheckStop(constref AHandler: TPackDraft0FileTaskHandler; var AStatus: TPackDraft0Status): Bool;
+function OpenConnection(const AFile: TFile; AReadOnly: Bool; out AConnection: Psqlite3; var AError: TPackDraft0Error;
+  var AStatus: TPackDraft0Status): Bool;
+var
+  F: int;
+  R: TSQLite3ResultCode;
+begin
+  if AReadOnly then
+    F := SQLITE_OPEN_READONLY
+  else
+    F := SQLITE_OPEN_CREATE or SQLITE_OPEN_READWRITE;
+  F := F or SQLITE_OPEN_EXRESCODE or SQLITE_OPEN_FULLMUTEX;
+  R := Open(Path(AFile), F, AConnection);
+  Result := CheckSQLite3Result(AError, R, pd0sCanNotOpen, AStatus);
+end;
+
+function CloseConnection(AConnection: Psqlite3; var AError: TPackDraft0Error; var AStatus: TPackDraft0Status): Bool;
+var
+  R: TSQLite3ResultCode;
+begin
+  R := Close(AConnection);
+  Result := CheckSQLite3Result(AError, R, pd0sCanNotClose, AStatus);
+end;
+
+function HandleOptions(AConnection: Psqlite3; APageSize: TSQLite3PageSize; var AError: TPackDraft0Error;
+  var AStatus: TPackDraft0Status): Bool;
+begin
+  Result := EnableSecurity(AConnection, AStatus);
+  Result := Result and Options(AConnection, s3smOff, s3lmExclusive, s3jmOff, s3tmMemory, APageSize, AError, AStatus);
+end;
+
+procedure Stop(var AHandler: TPackDraft0TaskHandler; out AStatus: TPackDraft0Status);
+begin
+  if not AHandler.Stopped then
+  begin
+    AHandler.Stopped := True;
+    AStatus := pd0sDone;
+  end
+  else
+    AStatus := pd0sStopped;
+end;
+
+function CheckStop(constref AHandler: TPackDraft0TaskHandler; var AStatus: TPackDraft0Status): Bool;
 begin
   Result := AHandler.Stopped;
   if Result then
     Status(AStatus, pd0sStopped);
+end;
+
+function Error(constref AHandler: TPackDraft0TaskHandler): PPackDraft0Error;
+begin
+  Result := @AHandler.Error;
+end;
+
+function Statistics(constref AHandler: TPackDraft0FileTaskHandler): PPackDraft0Statistics;
+begin
+  Result := @AHandler.Statistics;
 end;
 
 //Compiler Issue: Process calling UThreadHelp.Create raises an exception, and this method helps
@@ -554,27 +794,6 @@ begin
   finally
     Finalize;
   end;
-end;
-
-procedure Stop(var AHandler: TPackDraft0FileTaskHandler; out AStatus: TPackDraft0Status);
-begin
-  if not AHandler.Stopped then
-  begin
-    AHandler.Stopped := True;
-    AStatus := pd0sDone;
-  end
-  else
-    AStatus := pd0sStopped;
-end;
-
-function Error(constref AHandler: TPackDraft0FileTaskHandler): PPackDraft0Error;
-begin
-  Result := @AHandler.Error;
-end;
-
-function Statistics(constref AHandler: TPackDraft0FileTaskHandler): PPackDraft0Statistics;
-begin
-  Result := @AHandler.Statistics;
 end;
 
 function CheckHeader(AData: Ptr; ASize: Siz): Bool;
@@ -713,11 +932,45 @@ begin
 
   if not UFile.Move(AsFileSystemObject(ASource), AsFileSystemObject(ADestination), O) then
     case LastSystemError of
-      sekPathNotFound, sekFileNotFound: AStatus := pd0sDoesNotExists;
+      sekDoesNotExists: AStatus := pd0sDoesNotExists;
       sekAlreadyExists: AStatus := pd0sAlreadyExists;
       else
         AStatus := pd0sAbnormal;
     end;
+end;
+
+function ToIncludes(const AValues: TStrArray; out AIncludeIDs: TPackDraft0ItemIDArray;
+  out AIncludePaths: TPackDraft0ItemPathArray; out AErrorIndex: Ind): Bool;
+
+  function Handle: Ind;
+  var
+    I: Ind;
+    S: Str;
+    V: I64;
+  begin
+    for I := 0 to High(AValues) do
+    begin
+      S := AValues[I];
+      if (S <> '') and (S[1] = PathDelimiter) then
+      begin
+        AIncludePaths += [S];
+        Continue;
+      end;
+
+      if UStringHelp.ToI64(S, V) then
+      begin
+        AIncludeIDs += [V];
+        Continue;
+      end;
+
+      Exit(I);
+    end;
+    Result := InvalidIndex;
+  end;
+
+begin
+  AErrorIndex := Handle;
+  Result := AErrorIndex = InvalidIndex;
 end;
 
 {$IfNDef Release}
